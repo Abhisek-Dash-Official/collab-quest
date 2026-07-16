@@ -64,17 +64,18 @@ Manages team workspaces, members, and group-specific configurations.
 
 Embedded inside the `groups` collection. Tracks individual member performance within a specific group.
 
-| Field                   | Type     | Constraints / Default | Description                                  |
-| :---------------------- | :------- | :-------------------- | :------------------------------------------- |
-| `uid`                   | `STRING` | FK                    | User ID of the member.                       |
-| `xp_gained`             | `INT`    | DEFAULT `0`           | XP earned _specifically_ in this group.      |
-| `group_rank`            | `INT`    | DEFAULT `0`           | Leaderboard rank in the group.               |
-| `fire_streak`           | `INT`    | DEFAULT `0`           | Current active streak in the group.          |
-| `task_completion_count` | `INT`    | DEFAULT `0`           | Tasks completed by this member.              |
-| `first_finishes_count`  | `INT`    | DEFAULT `0`           | Used for "speedster" badge calculation.      |
-| `last_finishes_count`   | `INT`    | DEFAULT `0`           | Used for "deadline-surfer" / sleeper badges. |
-| `total_nudges_sent`     | `INT`    | DEFAULT `0`           | Nudges sent by this member in the group.     |
-| `total_nudges_received` | `INT`    | DEFAULT `0`           | Nudges received by this member in the group. |
+| Field                   | Type     | Constraints / Default | Description                                       |
+| :---------------------- | :------- | :-------------------- | :------------------------------------------------ |
+| `uid`                   | `STRING` | FK                    | User ID of the member.                            |
+| `xp_gained`             | `INT`    | DEFAULT `0`           | XP earned _specifically_ in this group.           |
+| `group_rank`            | `INT`    | DEFAULT `0`           | Leaderboard rank in the group.                    |
+| `fire_streak`           | `INT`    | DEFAULT `0`           | Current active streak in the group.               |
+| `assigned_tasks_count`  | `INT`    | DEFAULT `0`           | Total tasks assigned to this member in the group. |
+| `task_completion_count` | `INT`    | DEFAULT `0`           | Tasks completed by this member.                   |
+| `first_finishes_count`  | `INT`    | DEFAULT `0`           | Used for "speedster" badge calculation.           |
+| `last_finishes_count`   | `INT`    | DEFAULT `0`           | Used for "deadline-surfer" / sleeper badges.      |
+| `total_nudges_sent`     | `INT`    | DEFAULT `0`           | Nudges sent by this member in the group.          |
+| `total_nudges_received` | `INT`    | DEFAULT `0`           | Nudges received by this member in the group.      |
 
 ---
 
