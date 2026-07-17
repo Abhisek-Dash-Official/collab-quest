@@ -15,13 +15,18 @@ $BaseXP = weightage \times 10$
 
 ### B. Completion Order Bonus (The "Speedster" mechanic)
 
-Users who complete the task first get a bonus. Order is tracked via the `completions` sub-schema.
+The bonus scales dynamically based on the total number of users assigned to the task (`N`). Since the platform allows a maximum of 5 users per group, the bonus distribution is tiered to ensure the last-place finishers only receive standard XP.
 
-- **1st Place:** $+20\%$ of Base XP
-- **2nd Place:** $+10\%$ of Base XP
-- **3rd Place onwards:** $+5\%$ (Standard XP)
+| Assigned Users (`N`) | 1st Place | 2nd Place        | 3rd Place        | 4th / 5th Place  |
+| :------------------- | :-------- | :--------------- | :--------------- | :--------------- |
+| **2 Users**          | $+08\%$   | $+0\%$ (Base XP) | -                | -                |
+| **3 Users**          | $+20\%$   | $+10\%$          | $+0\%$ (Base XP) | -                |
+| **4 Users**          | $+20\%$   | $+15\%$          | $+5\%$           | $+0\%$ (Base XP) |
+| **5 Users**          | $+25\%$   | $+15\%$          | $+10\%$          | $+0\%$ (Base XP) |
 
-### C. Early Bird Bonus (The "Fast Worker" mechanic)
+_Logic Rule:_ The last finisher (or the bottom percentile in larger groups) always receives standard Base XP ($+0\%$ bonus) to maintain the competitive value of the speed bonus.
+
+### C. Early Bird Bonus
 
 If a user completes a task using less than 50% of the allotted time.
 $TimeTaken = completion\_at - start\_time$
@@ -44,15 +49,15 @@ $TotalXP = BaseXP + Bonus_{Order} + Bonus_{EarlyBird} + Bonus_{TimeTraveler}$
 To keep users engaged, leveling up follows an exponential curve (RPG style). It's easy to level up initially, but requires more consistent effort for higher tiers.
 
 **Formula for Required XP to reach Next Level:**
-$RequiredXP = 100 \times (Level)^{1.5}$
+$RequiredXP = 30 \times (Level)^{1.5}$
 
 **Level Threshold Examples:**
 
 - **Level 1:** 0 XP (Starting Level)
-- **Level 2:** ~100 XP
-- **Level 3:** ~282 XP
-- **Level 4:** ~519 XP
-- **Level 5:** ~800 XP
+- **Level 2:** ~85 XP
+- **Level 3:** ~155 XP
+- **Level 4:** ~240 XP
+- **Level 5:** ~335 XP
 
 ---
 
@@ -84,7 +89,6 @@ Badges are awarded dynamically based on the stats tracked in the `members` sub-s
 ### Nudge Limits (Anti-Spam)
 
 - Global daily limit per user: `max_daily_nudge = 10` (Defined in `app_config`).
-- Per-task, per-user limit: `nudge_count <= 5` (Defined in `tasks.nudged_users`).
 
 ---
 

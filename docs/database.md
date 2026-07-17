@@ -122,10 +122,11 @@ Core collection for task management, deadlines, and tracking completions.
 
 ### ↳ `nudged_users` (Sub-Schema)
 
-| Field         | Type     | Constraints / Default | Description                                     |
-| :------------ | :------- | :-------------------- | :---------------------------------------------- |
-| `uid`         | `STRING` | FK                    | User who was nudged.                            |
-| `nudge_count` | `INT`    | MAX `5`               | Total times this user was nudged for this task. |
+| Field         | Type        | Constraints / Default | Description                                     |
+| :------------ | :---------- | :-------------------- | :---------------------------------------------- |
+| `uid`         | `STRING`    | FK                    | User who was nudged.                            |
+| `nudge_count` | `INT`       |                       | Total times this user was nudged for this task. |
+| `nudged_at`   | `DATE TIME` |                       | Timestamp when nudged                           |
 
 ---
 
