@@ -122,8 +122,8 @@ Based on the core user journey and application flowchart, development is structu
 
 For a deep dive into the underlying architecture and logic, refer to the core documentation files:
 
-- [**Database Schema Architecture:**](./docs/database.md) Detailed breakdown of collections, foreign keys, constraints, and sub-schemas.
-- [**Gamification & Math Engine:**](./docs/gamification-math.md) The mathematical foundation detailing XP multipliers, leveling curves, and badge unlock algorithms.
+- [**Database Schema Architecture:**](./docs/blueprint/02-database-schema.md) Detailed breakdown of collections, foreign keys, constraints, and sub-schemas.
+- [**Gamification & Math Engine:**](./docs/blueprint/03-gamification-engine.md) The mathematical foundation detailing XP multipliers, leveling curves, and badge unlock algorithms.
 
 ## Key Learnings & Methodology
 

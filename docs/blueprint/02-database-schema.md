@@ -36,6 +36,7 @@ Stores all user profile data, authentication details, and personal gamification 
 | `daily_nudge_count` | `INT`           | DEFAULT `0`                | Count of nudges sent today.               |
 | `last_nudge_date`   | `DATE TIME`     | NULL                       | Timestamp of the last sent nudge.         |
 | `created_at`        | `DATE TIME`     |                            | Account creation timestamp.               |
+| `push_subscription` | `OBJECT / JSON` | NULL                       | Web push endpoint and security keys.      |
 
 ---
 
