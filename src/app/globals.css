@@ -3,4 +3,45 @@
 @theme {
   --font-sans: var(--font-outfit), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-space-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --color-quest-gold: #FABE1E;
+  --color-quest-gold-deep: #FA961E;
+  --color-puzzle-red: #D23232;
+  --color-puzzle-red-deep: #D21E32;
+  --color-sync-teal: #0ABEE6;
+  --color-sync-teal-deep: #0ABED2;
+  --color-ink: #0A0A0A;
+  --color-parchment: #FFF9EF;
+  --color-cloud: #D2D2E6;
+
+  --font-display: var(--font-bricolage), sans-serif;
+  --font-body: var(--font-manrope), sans-serif;
+
+  --shadow-hard: 4px 4px 0px 0px var(--color-ink);
+  --shadow-hard-hover: 2px 2px 0px 0px var(--color-ink);
+  --shadow-hard-lg: 8px 8px 0px 0px var(--color-ink);
+}
+
+body {
+  background-color: var(--color-parchment);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+@keyframes dash-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(0.9);
+  }
+}
+
+.animate-dash {
+  animation: dash-pulse 2s infinite ease-in-out;
 }

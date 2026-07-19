@@ -65,17 +65,17 @@ $RequiredXP = 30 \times (Level)^{1.5}$
 
 Badges are awarded dynamically based on the stats tracked in the `members` sub-schema.
 
-| Badge Name             | Unlock Condition / Trigger Logic                                                                                                                                                           |
-| :--------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **🏆 MVP**             | Highest `task_completion_count` and `xp_gained` in the group at the end of a month.                                                                                                        |
-| **⚡ Speedster**       | Over **20%** of assigned tasks are first-finishes. <br>_(Formula: `first_finishes_count / assigned_tasks_count >= 0.20`, Min `assigned_tasks_count = 5`)_                                  |
-| **🦅 Fast-Worker**     | Over **30%** of assigned tasks are completed using less than half the allotted time. <br>_(Formula: `fast_finishes_count / assigned_tasks_count >= 0.30`, Min `assigned_tasks_count = 5`)_ |
-| **🕰️ Time-Traveler**   | Pre-emptively completed at least 5 tasks. <br>_(Formula: `completion_at < start_time` for 3+ tasks)_                                                                                       |
-| **🏄‍♂️ Deadline-Surfer** | Over **25%** of assigned tasks completed within 1 hour of the deadline. <br>_(Formula: `last_finishes_count / assigned_tasks_count >= 0.25`, Min `assigned_tasks_count = 5`)_              |
-| **🔥 Unstoppable**     | Maintaining a `fire_streak >= 7` days.                                                                                                                                                     |
-| **🥷 Nudge-Ninja**     | Held by the single user with the **highest** `total_nudges_sent` in the group. <br>_(Condition: Must have sent at least 5 nudges to qualify)._                                             |
-| **🎯 Most-Wanted**     | Held by the single user with the **highest** `total_nudges_received` in the group. <br>_(Condition: Must have received at least 5 nudges to qualify)._                                     |
-| **🗿 The NPC**         | **Badge of Shame:** Failed to complete **75%** or more of their assigned tasks. <br>_(Formula: `(assigned - completed) / assigned >= 0.75`, Min `assigned_tasks_count = 4`)_               |
+| Badge Name             | Unlock Condition / Trigger Logic                                                                                                                                                                                                                                        |
+| :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **🏆 MVP**             | Highest `task_completion_count` and `xp_gained` in the group at the end of a month.                                                                                                                                                                                     |
+| **⚡ Speedster**       | Over **20%** of assigned tasks are first-finishes. <br>_(Formula: `first_finishes_count / assigned_tasks_count >= 0.20`, Min `assigned_tasks_count = 5`)_                                                                                                               |
+| **🦅 Fast-Worker**     | Over **30%** of assigned tasks are completed using less than half the allotted time. <br>_(Formula: `fast_finishes_count / assigned_tasks_count >= 0.30`, Min `assigned_tasks_count = 5`)_                                                                              |
+| **🕰️ Time-Traveler**   | Pre-emptively completed at least 5 tasks. <br>_(Formula: `completion_at < start_time` for 3+ tasks)_                                                                                                                                                                    |
+| **🏄‍♂️ Deadline-Surfer** | Over 25% of assigned tasks completed in the final 10% of their total duration. <br>_(Task Formula: (deadline - completed_at) <= 0.10 \* (deadline - start_time)) <br>_(Badge Formula: last_finishes_count / assigned_tasks_count >= 0.25, Min assigned_tasks_count = 5) |
+| **🔥 Unstoppable**     | Maintaining a `fire_streak >= 7` days.                                                                                                                                                                                                                                  |
+| **🥷 Nudge-Ninja**     | Held by the single user with the **highest** `total_nudges_sent` in the group. <br>_(Condition: Must have sent at least 5 nudges to qualify)._                                                                                                                          |
+| **🎯 Most-Wanted**     | Held by the single user with the **highest** `total_nudges_received` in the group. <br>_(Condition: Must have received at least 5 nudges to qualify)._                                                                                                                  |
+| **🗿 The NPC**         | **Badge of Shame:** Failed to complete **75%** or more of their assigned tasks. <br>_(Formula: `(assigned - completed) / assigned >= 0.75`, Min `assigned_tasks_count = 4`)_                                                                                            |
 
 ---
 
