@@ -15,3 +15,6 @@ export const siteConfig = {
     "multiplayer to-do app"
   ],
 };
+
+export const siteLogo = "/logo.png"
+export const siteName = "Collab Quest"
