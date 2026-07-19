@@ -49,15 +49,13 @@ export default function Header() {
             </Link>
 
             {/* Center: Desktop Nav Links */}
-            {isAuthenticated && (
-                <nav className="hidden md:flex items-center gap-6 font-body font-bold text-sm text-ink">
-                    {mainNavItems.map((item) => (
-                        <Link key={item.href} href={item.href} className="hover:text-quest-gold-deep transition-colors">
-                            {item.label}
-                        </Link>
-                    ))}
-                </nav>
-            )}
+            <nav className="hidden md:flex items-center gap-6 font-body font-bold text-sm text-ink">
+                {mainNavItems.map((item) => (
+                    <Link key={item.href} href={item.href} className="hover:text-quest-gold-deep transition-colors">
+                        {item.label}
+                    </Link>
+                ))}
+            </nav>
 
             {/* Right: Avatar */}
             <div className="flex items-center gap-3 sm:gap-4">

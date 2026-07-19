@@ -187,6 +187,5 @@ Stores all user-specific alerts (nudges, deadline reminders, etc.).
 | `sender_id`    | `STRING`       | FK, NULL                       | User ID who triggered the action the action (e.g., nudge). |
 | `task_id`      | `Mongo OBJ id` | FK, NULL                       | Associated task, if applicable.                            |
 | `type`         | `STRING`       | ENUM (`'nudge'`, `'deadline'`) | Category of the notification.                              |
-| `metadata`     | `OBJECT`       |                                | Contextual data (e.g., `task_id`, `sender_id`).            |
 | `is_read`      | `BOOLEAN`      | DEFAULT `false`                | Tracks if the user has viewed the notification.            |
 | `created_at`   | `DATE TIME`    | DEFAULT `Date.now`             | Timestamp when notification was created.                   |
