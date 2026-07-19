@@ -123,11 +123,11 @@ Core collection for task management, deadlines, and tracking completions.
 
 ### ↳ `nudged_users` (Sub-Schema)
 
-| Field         | Type        | Constraints / Default | Description                                     |
-| :------------ | :---------- | :-------------------- | :---------------------------------------------- |
-| `uid`         | `STRING`    | FK                    | User who was nudged.                            |
-| `nudge_count` | `INT`       |                       | Total times this user was nudged for this task. |
-| `nudged_at`   | `DATE TIME` |                       | Timestamp when nudged                           |
+| Field             | Type           | Constraints / Default | Description                                     |
+| :---------------- | :------------- | :-------------------- | :---------------------------------------------- |
+| `uid`             | `STRING`       | FK                    | User who was nudged.                            |
+| `nudge_count`     | `INT`          |                       | Total times this user was nudged for this task. |
+| `notification_id` | `Mongo OBJ id` | FK                    | Link to the notification record                 |
 
 ---
 
@@ -175,3 +175,18 @@ Collects user bug reports, feature requests, and general feedback.
 | `status`     | `STRING`       | ENUM (`'open'`, `'in_progress'`, `'resolved'`), DEFAULT `'open'` | Current status of the ticket.       |
 | `created_at` | `DATE TIME`    |                                                                  | Submission timestamp.               |
 | `updated_at` | `DATE TIME`    |                                                                  | Last update timestamp.              |
+
+## 7. `notifications` Collection
+
+Stores all user-specific alerts (nudges, deadline reminders, etc.).
+
+| Field          | Type           | Constraints / Default          | Description                                                |
+| :------------- | :------------- | :----------------------------- | :--------------------------------------------------------- |
+| `_id`          | `Mongo OBJ id` | **PK**                         | Unique identifier for the notification.                    |
+| `recipient_id` | `STRING`       | FK, NOT NULL                   | User ID who receives the notification.                     |
+| `sender_id`    | `STRING`       | FK, NULL                       | User ID who triggered the action the action (e.g., nudge). |
+| `task_id`      | `Mongo OBJ id` | FK, NULL                       | Associated task, if applicable.                            |
+| `type`         | `STRING`       | ENUM (`'nudge'`, `'deadline'`) | Category of the notification.                              |
+| `metadata`     | `OBJECT`       |                                | Contextual data (e.g., `task_id`, `sender_id`).            |
+| `is_read`      | `BOOLEAN`      | DEFAULT `false`                | Tracks if the user has viewed the notification.            |
+| `created_at`   | `DATE TIME`    | DEFAULT `Date.now`             | Timestamp when notification was created.                   |
