@@ -1,7 +1,7 @@
 <div align="center">
 
-  <img src="./public/marketing/collab-quest-hero.webp" alt="Collab Quest" width="400" />
-
+  <img src="./public/collab-quest-hero.webp" alt="Collab Quest" width="400" />
+  
   <h1>Collab Quest</h1>
   
   <p>A gamified collaborative task manager engineered to turn team projects into shared adventures with real-time accountability, dynamic XP, and badge unlocks.</p>
