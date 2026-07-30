@@ -1,10 +1,18 @@
-import { jwtVerify } from 'jose';
+import { jwtVerify, SignJWT } from 'jose';
 
 if (!process.env.JWT_SECRET) {
   throw new Error('FATAL ERROR: JWT_SECRET is not defined in environment variables.');
 }
 
 const SECRET_KEY = new TextEncoder().encode(process.env.JWT_SECRET);
+
+// Helper function to generate token
+export async function generateToken(payload: any): Promise<string> {
+  return await new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("7d")
+    .sign(SECRET_KEY);
+}
 
 // Helper function to decode token (Not exported, used internally)
 async function decodeToken(token: string) {
@@ -36,3 +44,4 @@ export async function getAdminUid(token: string): Promise<string | null> {
   }
   return null;
 }
+
