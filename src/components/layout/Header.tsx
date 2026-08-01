@@ -104,7 +104,7 @@ export default function Header() {
                             Log In
                         </Link>
 
-                        <Link href="/signup" className="hidden sm:flex px-4 py-2 bg-quest-gold border-2 border-ink rounded-lg font-body font-bold text-sm shadow-[2px_2px_0px_var(--color-ink)] hover:translate-y-px hover:shadow-[1px_1px_0px_var(--color-ink)] transition-all items-center justify-center">
+                        <Link href="/register" className="hidden sm:flex px-4 py-2 bg-quest-gold border-2 border-ink rounded-lg font-body font-bold text-sm shadow-[2px_2px_0px_var(--color-ink)] hover:translate-y-px hover:shadow-[1px_1px_0px_var(--color-ink)] transition-all items-center justify-center">
                             Sign Up
                         </Link>
                     </div>
