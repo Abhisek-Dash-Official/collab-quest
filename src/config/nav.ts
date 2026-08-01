@@ -15,6 +15,7 @@ export const footerLinkGroups = [
       { label: 'Personal Quests', href: '/personal' },
       { label: 'Group Quests', href: '/groups' },
       { label: 'Friends', href: '/friends' },
+      { label: 'Game Manual', href: '/manual' },
     ],
   },
   {
@@ -22,6 +23,7 @@ export const footerLinkGroups = [
     links: [
       { label: 'About', href: '/about' },
       { label: 'Pricing', href: '/pricing' },
+      { label: 'Help Center', href: '/help' },
       { label: 'FAQ', href: '/faq' },
       { label: 'Contact', href: '/contact' },
     ],
