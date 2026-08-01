@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import connectToDatabase from "@/lib/db";
 import User from "@/models/User";
+import AppConfig from "@/models/AppConfig";
 import { sendSuccess, sendError } from "@/lib/utils";
 
 export async function POST(request: Request) {
@@ -17,6 +18,11 @@ export async function POST(request: Request) {
     }
 
     await connectToDatabase();
+
+    const config = await AppConfig.findOne().lean();
+    if (config && config.allow_new_signups === false) {
+      return sendError("New registrations are currently closed.", 403);
+    }
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
