@@ -3,6 +3,7 @@ import { Outfit, Space_Mono } from "next/font/google";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 import MaintenanceScreen from "@/components/MaintenanceScreen";
+import AuthProvider from "@/components/AuthProvider";
 import connectToDatabase from "@/lib/db";
 import AppConfig from "@/models/AppConfig";
 
@@ -76,7 +77,11 @@ export default async function RootLayout({
       lang="en"
       className={`${outfit.variable} ${spaceMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
     </html>
   );
 }
