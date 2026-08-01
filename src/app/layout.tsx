@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Outfit, Space_Mono } from "next/font/google";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
+import MaintenanceScreen from "@/components/MaintenanceScreen";
+import connectToDatabase from "@/lib/db";
+import AppConfig from "@/models/AppConfig";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -48,11 +51,26 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
+
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  await connectToDatabase();
+
+  const config = await AppConfig.findOne().lean();
+
+  if (config?.maintenance_mode) {
+    return (
+      <html lang="en">
+        <body>
+          <MaintenanceScreen message={config.maintenance_msg} />
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html
       lang="en"
