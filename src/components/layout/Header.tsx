@@ -37,13 +37,13 @@ export default function Header() {
 
     const initial = user?.username?.charAt(0).toUpperCase() || "U";
     const avatarUrl = getAvatarUrl();
-    const displayLevel = getLevel(); // <-- Store se level fetch kiya
+    const displayLevel = getLevel();
 
     return (
         <header className="sticky top-0 z-50 w-full h-16 bg-parchment border-b-2 border-ink flex items-center justify-between px-4 sm:px-6 lg:px-8">
 
             {/* Left: Logo */}
-            <Link href={isAuthenticated ? "/dashboard" : "/"} className="flex items-center gap-2" aria-label={`${siteName} Home`}>
+            <Link href="/" className="flex items-center gap-2" aria-label={`${siteName} Home`}>
                 <img src={siteLogo} alt={siteName} className="w-6 h-6 object-contain" />
                 <span className="font-display font-bold text-lg text-ink">{siteName}</span>
             </Link>
