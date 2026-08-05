@@ -4,24 +4,7 @@ import connectToDatabase from "@/lib/db";
 import User from "@/models/User";
 import AppConfig from "@/models/AppConfig";
 import { sendSuccess, sendError } from "@/lib/utils";
-
-function generateUID(username: string): string {
-const cleanName = username.split(' ')[0].replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-  const firstName = cleanName || 'cqplyr';
-  
-  const date = new Date();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = String(date.getFullYear()).slice(2);
-  const timeStr = `${month}${year}`;
-  
-  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  let randomStr = '';
-  for (let i = 0; i < 5; i++) {
-    randomStr += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  
-  return `${firstName}-${timeStr}-${randomStr}`;
-}
+import { generateUID } from "@/lib/utils";
 
 export async function POST(request: Request) {
   try {

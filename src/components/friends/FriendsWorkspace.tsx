@@ -223,7 +223,7 @@ export default function FriendsWorkspace() {
                     {/* Search Input */}
                     <div className="flex flex-col gap-2">
                         <label className="font-mono text-xs font-bold text-ink/60 uppercase">Find user by Quest Code</label>
-                        <form onSubmit={handleSearchUser} className="flex gap-2">
+                        <form onSubmit={handleSearchUser} className="flex gap-2 flex-wrap">
                             <input
                                 type="text"
                                 placeholder="Paste code here..."
