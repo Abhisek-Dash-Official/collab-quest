@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import connectToDatabase from "@/lib/db";
 import User from "@/models/User";
+import UserBan from "@/models/UserBan";
 import { sendSuccess, sendError } from "@/lib/utils";
 import { getUserUid } from "@/lib/auth";
 
@@ -24,6 +25,13 @@ export async function GET(request: NextRequest) {
     
     if (!user) {
       return sendError("User not found", 404);
+    }
+
+    const banRecord = await UserBan.findOne({ uid });
+    if (banRecord) {
+      const response = sendError(`Account banned: ${banRecord.ban_reason || 'Violation of terms'}`, 403);
+      response.cookies.set("token", "", { maxAge: 0, path: "/" });
+      return response;
     }
 
     return sendSuccess(

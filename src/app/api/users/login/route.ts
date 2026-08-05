@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import connectToDatabase from "@/lib/db";
 import User from "@/models/User";
+import UserBan from "@/models/UserBan";
 import { sendSuccess, sendError } from "@/lib/utils";
 import { generateToken } from "@/lib/auth";
 
@@ -18,6 +19,14 @@ export async function POST(request: Request) {
     const user = await User.findOne({ email });
     if (!user) {
       return sendError("Invalid credentials", 401);
+    }
+
+    const banRecord = await UserBan.findOne({ uid: user.uid });
+    if (banRecord) {
+      return sendError(
+        `Your account has been banned. Reason: ${banRecord.ban_reason || 'Violation of terms'}`, 
+        403
+      );
     }
 
     const isPasswordMatch = await bcrypt.compare(password, user.hashed_password);
