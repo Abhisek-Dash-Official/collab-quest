@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import Group from "@/models/Group";
 
 export function sendSuccess(message: string, data: any = null, status: number = 200) {
   return NextResponse.json({ success: true, message, data }, { status });
@@ -37,4 +38,20 @@ export function generateGroupInviteCode(groupName: string): string {
   }
   
   return `grp-${baseName}-${randomStr}`;
+}
+
+export async function checkGroupAccess(uid: string, groupId: string) {
+  const group = await Group.findById(groupId).lean();
+  if (!group) {
+    return { error: "Group not found", status: 404 };
+  }
+
+  const isCreator = group.created_by === uid;
+  const isMember = group.members.some((m: any) => m.uid === uid);
+
+  if (!isMember && !isCreator) {
+    return { error: "You do not have access to this group", status: 403 };
+  }
+
+  return { group, isCreator, isMember, error: null };
 }
