@@ -206,8 +206,8 @@ export default function GroupsHubPage() {
                                     type="button"
                                     onClick={() => setCreateIconId("")}
                                     className={`w-12 h-12 shrink-0 border-2 transition-all relative overflow-hidden ${createIconId === ""
-                                            ? "border-ink shadow-[2px_2px_0px_var(--color-ink)] -translate-y-0.5 bg-sync-teal/20"
-                                            : "border-transparent hover:border-ink/50"
+                                        ? "border-ink shadow-[2px_2px_0px_var(--color-ink)] -translate-y-0.5 bg-sync-teal/20"
+                                        : "border-transparent hover:border-ink/50"
                                         }`}
                                 >
                                     <div className="w-full h-full flex items-center justify-center font-display font-black text-ink text-xl uppercase bg-parchment">
@@ -222,8 +222,8 @@ export default function GroupsHubPage() {
                                         type="button"
                                         onClick={() => setCreateIconId(id)}
                                         className={`w-12 h-12 shrink-0 border-2 transition-all relative overflow-hidden ${createIconId === id
-                                                ? "border-ink shadow-[2px_2px_0px_var(--color-ink)] -translate-y-0.5 bg-sync-teal/20"
-                                                : "border-transparent hover:border-ink/50"
+                                            ? "border-ink shadow-[2px_2px_0px_var(--color-ink)] -translate-y-0.5 bg-sync-teal/20"
+                                            : "border-transparent hover:border-ink/50"
                                             }`}
                                     >
                                         <Image

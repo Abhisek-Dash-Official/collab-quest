@@ -29,7 +29,15 @@ export const useUserStore = create<UserState>()((set, get) => ({
     user: state.user ? { ...state.user, ...data } : null
   })),
   
-  logout: () => set({ user: null, isAuthenticated: false }),
+  logout: async () => {
+    try {
+      await fetch("/api/users/logout", { method: "POST" });
+    } catch (error) {
+      console.error("Logout API call failed:", error);
+    } finally {
+      set({ user: null, isAuthenticated: false });
+    }
+  },
 
   // Avatar image url generator
   getAvatarUrl: () => {

@@ -168,7 +168,7 @@ export default function LoginPage() {
             {/* Footer */}
             <p className="text-center font-body font-bold text-sm">
                 New here?{" "}
-                <Link href="/register" className="text-sync-teal hover:underline underline-offset-2">
+                <Link href="/signup" className="text-sync-teal hover:underline underline-offset-2">
                     Create an account
                 </Link>
             </p>
