@@ -2,6 +2,8 @@ import { create } from 'zustand';
 
 export interface GroupMember {
   uid: string;
+  username?: string;
+  avatar_id?: string;
   level: number;
   xp_gained: number;
   group_rank: number;
