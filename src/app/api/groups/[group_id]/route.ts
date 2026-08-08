@@ -25,6 +25,20 @@ export async function GET(request: NextRequest, { params }: { params: { group_id
       return sendError("You are not a member of this group", 403);
     }
 
+    const memberUids = group.members.map((m: any) => m.uid);
+    const users = await User.find({ uid: { $in: memberUids } })
+      .select("uid username avatar_id")
+      .lean();
+    
+    group.members = group.members.map((member: any) => {
+      const userDetails = users.find((u: any) => u.uid === member.uid);
+      return {
+        ...member,
+        username: userDetails?.username || "Unknown Player",
+        avatar_id: userDetails?.avatar_id || "0"
+      };
+    });
+
     return sendSuccess("Group fetched successfully", group);
   } catch (error: any) {
     console.error("Get Group API Error:", error);
