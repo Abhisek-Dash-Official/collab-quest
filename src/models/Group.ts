@@ -43,7 +43,7 @@ const MemberSchema = new Schema<IMember>({
 const GroupSchema = new Schema<IGroup>({
   group_name: { type: String, required: true },
   created_by: { type: String, required: true },
-  group_icon_id: { type: String, default: "0" },
+  group_icon_id: { type: String, default: "" },
   purpose: { type: String },
   members: { type: [MemberSchema], required: true },
   invite_code: { type: String, required: true, unique: true },

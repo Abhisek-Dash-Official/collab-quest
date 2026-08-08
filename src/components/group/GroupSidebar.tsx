@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useGroupStore } from "@/store/useGroupStore";
 import { Compass, Users, ChevronLeft, ChevronRight, X } from "lucide-react";
+import Image from "next/image";
 
 interface SidebarProps {
     isOpen: boolean;
@@ -44,9 +45,9 @@ export default function GroupSidebar({ isOpen, toggleSidebar }: SidebarProps) {
             )}
 
             <aside
-                className={`relative h-full bg-parchment border-r-4 border-ink flex flex-col transition-all duration-300 ease-out z-50 overflow-hidden shrink-0
-          ${isOpen ? "w-64 translate-x-0" : "w-20 -translate-x-full md:translate-x-0 absolute md:relative"}
-        `}
+                className={`absolute md:relative h-full bg-parchment border-r-4 border-ink flex flex-col transition-all duration-300 ease-out z-50 overflow-hidden shrink-0
+                ${isOpen ? "w-64 translate-x-0" : "w-20 -translate-x-full md:translate-x-0 absolute md:relative"}
+                `}
             >
                 {/* Sidebar Header & Toggle */}
                 <div className="h-16 border-b-4 border-ink flex items-center justify-between px-4 shrink-0 bg-sync-teal text-white">
@@ -86,10 +87,20 @@ export default function GroupSidebar({ isOpen, toggleSidebar }: SidebarProps) {
                                     }`}
                                 title={group.group_name}
                             >
-                                <div className="w-10 h-10 shrink-0 bg-white border-2 border-ink flex items-center justify-center overflow-hidden">
-                                    <span className="font-display font-black text-ink text-lg uppercase">
-                                        {group.group_name.charAt(0)}
-                                    </span>
+
+                                <div className="w-10 h-10 shrink-0 bg-cloud border-2 border-ink flex items-center justify-center relative overflow-hidden">
+                                    {group.group_icon_id && group.group_icon_id !== "" ? (
+                                        <Image
+                                            src={`/group_icons/group_icon_${group.group_icon_id}.png`}
+                                            alt="Icon"
+                                            fill
+                                            className="object-cover"
+                                        />
+                                    ) : (
+                                        <span className="font-display font-black text-ink text-lg uppercase">
+                                            {group.group_name.charAt(0)}
+                                        </span>
+                                    )}
                                 </div>
 
                                 {isOpen && (
