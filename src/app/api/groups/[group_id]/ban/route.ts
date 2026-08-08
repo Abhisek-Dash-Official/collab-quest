@@ -5,7 +5,7 @@ import User from "@/models/User";
 import { getUserUid } from "@/lib/auth";
 import { sendSuccess, sendError } from "@/lib/utils";
 
-export async function POST(request: NextRequest, { params }: { params: { group_id: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ group_id: string }> }) {
   try {
     const token = request.cookies.get("token")?.value;
     if (!token) return sendError("Unauthorized", 401);
@@ -22,12 +22,13 @@ export async function POST(request: NextRequest, { params }: { params: { group_i
 
     await connectToDatabase();
     
-    const group = await Group.findById(params.group_id);
+    const group_id = (await params).group_id;
+    const group = await Group.findById(group_id);
     if (!group) return sendError("Group not found", 404);
     if (group.created_by !== uid) return sendError("Only the creator can ban/unban users", 403);
 
     if (action === 'ban') {
-      await Group.findByIdAndUpdate(params.group_id, {
+      await Group.findByIdAndUpdate(group_id, {
         $pull: { members: { uid: targetUid } },
         $addToSet: { bannedUsers: targetUid }
       });
@@ -36,7 +37,7 @@ export async function POST(request: NextRequest, { params }: { params: { group_i
     }
 
     if (action === 'unban') {
-      await Group.findByIdAndUpdate(params.group_id, {
+      await Group.findByIdAndUpdate(group_id, {
         $pull: { bannedUsers: targetUid }
       });
       return sendSuccess("User has been unbanned and can request to join again", null);

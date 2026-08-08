@@ -7,7 +7,7 @@ import { getUserUid } from "@/lib/auth";
 import { sendSuccess, sendError, checkGroupAccess } from "@/lib/utils";
 import { calculateTaskXP, getTaskTimingModifiers } from "@/lib/gamification";
 
-export async function POST(request: NextRequest, { params }: { params: { group_id: string, task_id: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ group_id: string, task_id: string }> }) {
   try {
     const token = request.cookies.get("token")?.value;
     const uid = await getUserUid(token!);
@@ -15,10 +15,11 @@ export async function POST(request: NextRequest, { params }: { params: { group_i
 
     await connectToDatabase();
     
-    const access = await checkGroupAccess(uid, params.group_id);
+    const { group_id, task_id } = await params;
+    const access = await checkGroupAccess(uid, group_id);
     if (access.error) return sendError(access.error, access.status);
 
-    const task = await Task.findById(params.task_id);
+    const task = await Task.findById(task_id);
     if (!task) return sendError("Task not found", 404);
 
     if (task.status === 'completed') return sendError("Task is already fully completed", 400);
@@ -64,7 +65,7 @@ export async function POST(request: NextRequest, { params }: { params: { group_i
     await task.save();
 
     await Group.findOneAndUpdate(
-      { _id: params.group_id, "members.uid": uid },
+      { _id: group_id, "members.uid": uid },
       {
         $inc: {
           "members.$.xp_gained": earnedXP,

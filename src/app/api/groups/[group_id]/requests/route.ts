@@ -7,7 +7,7 @@ import { getUserUid } from "@/lib/auth";
 import { sendSuccess, sendError } from "@/lib/utils";
 
 // GET ALL JOIN REQUESTS (Creator Only)
-export async function GET(request: NextRequest, { params }: { params: { group_id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ group_id: string }> }) {
   try {
     const token = request.cookies.get("token")?.value;
     if (!token) return sendError("Unauthorized", 401);
@@ -16,7 +16,8 @@ export async function GET(request: NextRequest, { params }: { params: { group_id
     if (!uid) return sendError("Invalid session", 401);
 
     await connectToDatabase();
-    const group = await Group.findById(params.group_id).lean();
+    const group_id = (await params).group_id;
+    const group = await Group.findById(group_id).lean();
     
     if (!group) return sendError("Group not found", 404);
     if (group.created_by !== uid) return sendError("Only the creator can view requests", 403);
@@ -33,7 +34,7 @@ export async function GET(request: NextRequest, { params }: { params: { group_id
 }
 
 // APPROVE OR REJECT REQUEST (Creator Only)
-export async function POST(request: NextRequest, { params }: { params: { group_id: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ group_id: string }> }) {
   try {
     const token = request.cookies.get("token")?.value;
     if (!token) return sendError("Unauthorized", 401);
@@ -48,7 +49,8 @@ export async function POST(request: NextRequest, { params }: { params: { group_i
 
     await connectToDatabase();
     
-    const group = await Group.findById(params.group_id);
+    const group_id = (await params).group_id;
+    const group = await Group.findById(group_id);
     if (!group) return sendError("Group not found", 404);
     if (group.created_by !== uid) return sendError("Only the creator can manage requests", 403);
     
@@ -57,7 +59,7 @@ export async function POST(request: NextRequest, { params }: { params: { group_i
     }
 
     if (action === 'reject') {
-      await Group.findByIdAndUpdate(params.group_id, { $pull: { joinRequests: targetUid } });
+      await Group.findByIdAndUpdate(group_id, { $pull: { joinRequests: targetUid } });
       return sendSuccess("Request rejected", null);
     }
 
@@ -75,7 +77,7 @@ export async function POST(request: NextRequest, { params }: { params: { group_i
         return sendError("User has reached their maximum group limit", 403);
       }
 
-      await Group.findByIdAndUpdate(params.group_id, {
+      await Group.findByIdAndUpdate(group_id, {
         $pull: { joinRequests: targetUid },
         $push: {
           members: {

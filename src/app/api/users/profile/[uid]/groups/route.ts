@@ -5,10 +5,10 @@ import { sendSuccess, sendError } from "@/lib/utils";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { uid: string } }
+  context: { params: Promise<{ uid: string }> }
 ) {
   try {
-    const { uid } = params;
+    const { uid } = await context.params;
     if (!uid) return sendError("User UID is required", 400);
 
     await connectToDatabase();

@@ -7,7 +7,7 @@ import { getUserUid } from "@/lib/auth";
 import { sendSuccess, sendError } from "@/lib/utils";
 
 // GET GROUP DETAILS
-export async function GET(request: NextRequest, { params }: { params: { group_id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ group_id: string }> }) {
   try {
     const token = request.cookies.get("token")?.value;
     if (!token) return sendError("Unauthorized", 401);
@@ -17,7 +17,8 @@ export async function GET(request: NextRequest, { params }: { params: { group_id
 
     await connectToDatabase();
 
-    const group = await Group.findById(params.group_id).lean();
+    const group_id = (await params).group_id;
+    const group = await Group.findById(group_id).lean();
     if (!group) return sendError("Group not found", 404);
 
     const isMember = group.members.some((m: any) => m.uid === uid);
@@ -47,8 +48,10 @@ export async function GET(request: NextRequest, { params }: { params: { group_id
 }
 
 // UPDATE GROUP (Only Creator)
-export async function PATCH(request: NextRequest, { params }: { params: { group_id: string } }) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ group_id: string }> }) {
   try {
+    const group_id = (await params).group_id;
+    
     const token = request.cookies.get("token")?.value;
     if (!token) return sendError("Unauthorized", 401);
 
@@ -59,7 +62,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { group_
     
     await connectToDatabase();
     
-    const group = await Group.findById(params.group_id);
+    const group = await Group.findById(group_id);
     if (!group) return sendError("Group not found", 404);
     
     if (group.created_by !== uid) return sendError("Only the creator can update the group", 403);
@@ -79,8 +82,9 @@ export async function PATCH(request: NextRequest, { params }: { params: { group_
 }
 
 // DELETE GROUP (Only Creator + Full Cleanup)
-export async function DELETE(request: NextRequest, { params }: { params: { group_id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ group_id: string }> }) {
   try {
+    const group_id = (await params).group_id;
     const token = request.cookies.get("token")?.value;
     if (!token) return sendError("Unauthorized", 401);
 
@@ -89,19 +93,19 @@ export async function DELETE(request: NextRequest, { params }: { params: { group
 
     await connectToDatabase();
 
-    const group = await Group.findById(params.group_id);
+    const group = await Group.findById(group_id);
     if (!group) return sendError("Group not found", 404);
 
     if (group.created_by !== uid) return sendError("Only the creator can delete the group", 403);
 
-    await Task.deleteMany({ group_id: params.group_id });
+    await Task.deleteMany({ group_id: group_id });
 
     await User.updateMany(
-      { joined_groups: params.group_id },
-      { $pull: { joined_groups: params.group_id } }
+      { joined_groups: group_id },
+      { $pull: { joined_groups: group_id } }
     );
 
-    await Group.findByIdAndDelete(params.group_id);
+    await Group.findByIdAndDelete(group_id);
 
     return sendSuccess("Group and associated tasks deleted successfully", null);
   } catch (error: any) {

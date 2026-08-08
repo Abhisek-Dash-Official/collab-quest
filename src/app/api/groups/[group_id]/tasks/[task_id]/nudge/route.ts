@@ -15,8 +15,9 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY || ''
 );
 
-export async function POST(request: NextRequest, { params }: { params: { group_id: string, task_id: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ group_id: string, task_id: string }> }) {
   try {
+    const { group_id, task_id } = await params;
     const token = request.cookies.get("token")?.value;
     const senderUid = await getUserUid(token!);
     if (!senderUid) return sendError("Unauthorized", 401);
@@ -27,13 +28,13 @@ export async function POST(request: NextRequest, { params }: { params: { group_i
 
     await connectToDatabase();
     
-    const access = await checkGroupAccess(senderUid, params.group_id);
+    const access = await checkGroupAccess(senderUid, group_id);
     if (access.error) return sendError(access.error, access.status);
     
     const isTargetMember = access.group.members.some((m: any) => m.uid === targetUid);
     if (!isTargetMember) return sendError("Target user is not a member of this group", 403);
 
-    const task = await Task.findById(params.task_id);
+    const task = await Task.findById(task_id);
     if (!task) return sendError("Task not found", 404);
     if (task.status === 'completed') return sendError("Task is already completed, no need to nudge!", 400);
     
@@ -64,12 +65,12 @@ export async function POST(request: NextRequest, { params }: { params: { group_i
     );
 
     await Group.findOneAndUpdate(
-      { _id: params.group_id, "members.uid": senderUid },
+      { _id: group_id, "members.uid": senderUid },
       { $inc: { "members.$.total_nudges_sent": 1 } }
     );
 
     await Group.findOneAndUpdate(
-      { _id: params.group_id, "members.uid": targetUid },
+      { _id: group_id, "members.uid": targetUid },
       { $inc: { "members.$.total_nudges_received": 1 } }
     );
 
@@ -85,7 +86,7 @@ export async function POST(request: NextRequest, { params }: { params: { group_i
     await Notification.create({
       recipient_id: targetUid,
       sender_id: senderUid,
-      task_id: params.task_id,
+      task_id: task_id,
       type: 'nudge',
       is_read: false
     });
@@ -97,7 +98,7 @@ export async function POST(request: NextRequest, { params }: { params: { group_i
           title: `👋 Nudge from ${sender.username}`,
           body: `Don't forget to complete: "${task.title}"`,
           icon: `/avatars/avatar-${sender.avatar_id || '0'}.png`,
-          url: `/groups/${params.group_id}`,
+          url: `/groups/${group_id}`,
         });
         
         await webpush.sendNotification(targetUser.push_subscription, pushPayload);
